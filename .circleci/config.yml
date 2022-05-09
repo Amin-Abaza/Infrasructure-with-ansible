@@ -17,9 +17,24 @@ jobs:
                 --template-file template.yml \
                 --stack-name MY-infra-Stack \
                 --region us-east-1
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+  configure_infrastructure: 
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+              # You can get this ID in the section where you registered the SSH Key
+              fingerprints: ["88:3d:e3:3e:f4:39:8a:67:9b:3b:f2:1f:45:3a:86:17"] 
+      - run:
+          name: Install Ansible
+          command: |
+            apk add --update ansible
+      - run:
+          name: Run Playbook and Configure server
+          command: |
+            ansible-playbook -i inventroy main-remote.yml
 workflows:
   my-workflow:
     jobs:
       - create_infrastructure
+      - configure_infrastructure
