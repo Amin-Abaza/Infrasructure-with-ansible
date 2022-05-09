@@ -39,14 +39,14 @@ jobs:
     steps: 
       - run: apk add --update curl
       - run:
-        name: smoke test
-        command: |
-            if curl -s --head "https://blog.udacity.com/" 
-            then
-              return 0
-            else
-              return 1
-            fi
+          name: smoke test
+          command: |
+              if curl -s --head "https://blog.udacity.com/" 
+                then
+                  return 0
+                else
+                  return 1
+                fi
 
 workflows:
   my-workflow:
